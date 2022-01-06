@@ -1,26 +1,15 @@
-echo "loading boot vars"
-setenv load_addr "0x9000000"
-load mmc ${devnum} ${load_addr} vars.txt
-env import -t ${load_addr} ${filesize}
+# enable swd debugging interface
+# mw.l 0xFF000034 06600440 1
 
-setenv bootargs "root=/dev/mmcblk0p2 earlyprintk console=ttyS0,115200n8 rw rootwait"
-fatload mmc ${devnum}:${distro_bootpart} ${fdt_addr_r} ${fdtfile}
+# Disable i2s0_8ch mclk output to be able to use the pin as mclk input.
+# This should have been handled in clk framework, but due to some insanity in
+# rockchip clock tree, it is not so easy to do modifications there,
+# but much easier to just write a register here.
+# Please refer to TRM for more info.
+mw.l 0xFF500334 00300030 1
+
+setenv bootargs "root=/dev/mmcblk0p2 ro rootwait"
+fatload mmc ${devnum}:${distro_bootpart} ${fdt_addr_r} rockchip/rk3308-smartcross.dtb
 fatload mmc ${devnum}:${distro_bootpart} ${kernel_addr_r} Image
-
-# append overlays as required
-setenv overlay_error "false"
-fdt addr ${fdt_addr_r}
-fdt resize 65536
-for overlay_file in ${overlays}; do
-  echo "loading overlay ${overlay_file}"
-	if fatload mmc ${devnum}:${distro_bootpart} ${load_addr} rockchip/overlays/${overlay_file}.dtbo; then
-		echo "Applying kernel provided DT overlay ${overlay_file}.dtbo"
-		fdt apply ${load_addr} || setenv overlay_error "true"
-	fi
-done
-if test "${overlay_error}" = "true"; then
-	echo "Error applying DT overlays, restoring original DT"
-  fatload mmc ${devnum}:${distro_bootpart} ${fdt_addr_r} ${fdtfile}
-fi
 
 booti ${kernel_addr_r} - ${fdt_addr_r}
