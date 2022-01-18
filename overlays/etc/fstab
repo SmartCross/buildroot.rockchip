@@ -1,0 +1,3 @@
+/dev/root / auto ro 0 1
+tmpfs /var tmpfs mode=1777 0 0
+/dev/mmcblk0p1 /boot auto ro 0 0

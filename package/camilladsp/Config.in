@@ -1,0 +1,26 @@
+config BR2_PACKAGE_CAMILLADSP
+     bool "CamillaDSP"
+     depends on BR2_PACKAGE_HOST_RUSTC_TARGET_ARCH_SUPPORTS
+     select BR2_PACKAGE_HOST_RUSTC
+     select BR2_PACKAGE_ALSA_LIB
+     help
+       A flexible linux IIR and FIR engine for crossovers, 
+       room correction etc.
+
+       https://github.com/HEnquist/camilladsp
+
+if BR2_PACKAGE_CAMILLADSP
+
+config BR2_CAMILLADSP_WEBSOCKET
+    bool "WebSocket support"
+    default y
+    help
+      This enables the WebSocket feature for CamillaDSP.
+
+config BR2_CAMILLADSP_DEBUG
+    bool "Debug mode"
+    default n
+    help
+      This enables Debug mode for CamillaDSP.
+
+endif

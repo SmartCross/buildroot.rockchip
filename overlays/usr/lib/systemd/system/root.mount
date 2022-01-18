@@ -1,0 +1,12 @@
+[Unit]
+Description=Bind Mount for Root Home
+
+[Mount]
+What=/data/root
+Where=/root
+Options=bind
+Type=none
+TimeoutSec=1s
+
+[Install]
+RequiredBy=local-fs.target

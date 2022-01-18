@@ -1,0 +1,80 @@
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  target_level: 500
+  adjust_period: 3
+  enable_rate_adjust: true
+  capture:
+    type: Alsa
+    channels: 2
+    device: "default:CARD=UAC2Gadget"
+    format: S24LE
+    retry_on_error: false
+    avoid_blocking_read: true
+  playback:
+    type: Alsa
+    channels: 4
+    device: "default:CARD=Test123"
+    format: S24LE
+
+mixers:
+  to4chan:
+    channels:
+      in: 2
+      out: 4
+    mapping:
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: 0
+            inverted: false
+      - dest: 1
+        sources:
+          - channel: 0
+            gain: 0
+            inverted: false
+      - dest: 2
+        sources:
+          - channel: 1
+            gain: 0
+            inverted: false
+      - dest: 3
+        sources:
+          - channel: 1
+            gain: 0
+            inverted: false
+
+filters:
+  lowpass2k:
+    type: Biquad
+    parameters:
+      type: Lowpass
+      freq: 3000
+      q: 0.8
+  highpass2k:
+    type: Biquad
+    parameters:
+      type: Highpass
+      freq: 3000
+      q: 0.8
+
+pipeline:
+  - type: Mixer
+    name: to4chan
+  - type: Filter
+    channel: 0
+    names:
+      - lowpass2k
+  - type: Filter
+    channel: 2
+    names:
+      - lowpass2k
+  - type: Filter
+    channel: 1
+    names:
+      - highpass2k
+  - type: Filter
+    channel: 3
+    names:
+      - highpass2k
+

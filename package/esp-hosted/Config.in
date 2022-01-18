@@ -1,0 +1,5 @@
+config BR2_PACKAGE_ESP_HOSTED
+        bool "ESP Hosted"
+        depends on BR2_LINUX_KERNEL
+        help
+                ESP Hosted

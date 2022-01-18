@@ -1,0 +1,8 @@
+general = {
+    output_backend = "pipe";
+};
+pipe =
+{
+  name = "test"; // there is no default pipe name for the output
+};
+

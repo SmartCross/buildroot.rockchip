@@ -1,0 +1,14 @@
+[Unit]
+Description=Mount User Data Partition
+After=local-fs-pre.target
+Requires=local-fs-pre.target
+
+[Mount]
+What=/dev/disk/by-partlabel/smartcross_userdata
+Where=/data
+Options=noatime
+ReadWriteOnly=true
+TimeoutSec=1s
+
+[Install]
+RequiredBy=local-fs.target

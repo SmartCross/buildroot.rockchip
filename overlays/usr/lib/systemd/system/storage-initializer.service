@@ -1,0 +1,12 @@
+[Unit]
+Description=Initialize User Data Partition
+DefaultDependencies=no
+Before=local-fs-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/bin/smartcross_storage_initializer
+
+[Install]
+RequiredBy=local-fs-pre.target
