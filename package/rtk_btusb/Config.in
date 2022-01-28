@@ -1,0 +1,9 @@
+config BR2_PACKAGE_RTK_BTUSB
+        bool "Realtek USB Bluetooth Driver"
+        depends on BR2_LINUX_KERNEL
+        help
+                Enable support for Realtek USB Bluetooth
+                driver kernel module.
+                
+                Remember to disable CONFIG_BT_HCIBTUSB_RTL
+                and CONFIG_BT_HCIBTUSB in Linux kernel.

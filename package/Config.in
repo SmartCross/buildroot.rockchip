@@ -9,5 +9,7 @@ source "$BR2_EXTERNAL_RK3308_PATH/package/musikcube/Config.in"
 source "$BR2_EXTERNAL_RK3308_PATH/package/camilladsp/Config.in"
 source "$BR2_EXTERNAL_RK3308_PATH/package/esp-hosted/Config.in"
 source "$BR2_EXTERNAL_RK3308_PATH/package/rtl8821cu/Config.in"
+source "$BR2_EXTERNAL_RK3308_PATH/package/rtl88x2bu/Config.in"
+source "$BR2_EXTERNAL_RK3308_PATH/package/rtk_btusb/Config.in"
 source "$BR2_EXTERNAL_RK3308_PATH/package/storage_initializer/Config.in"
 endmenu

@@ -1,5 +1,6 @@
 config BR2_PACKAGE_RTL8821CU
-        bool "RTL8821CU Driver"
+        bool "RTL8821CU USB WiFi Driver"
         depends on BR2_LINUX_KERNEL
         help
-                RTL8821CU USB WiFi Driver
+                Enable support for RTL8821CU USB WiFi
+                driver kernel module
