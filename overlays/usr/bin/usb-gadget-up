@@ -12,7 +12,7 @@ echo 0xCAFE > idProduct
 mkdir strings/0x409
 echo "SmartCross" > strings/0x409/manufacturer
 echo "SC-1 USB Device" > strings/0x409/product
-echo "00001" > strings/0x409/serialnumber
+cat /etc/machine-id > strings/0x409/serialnumber
 
 mkdir configs/c.1
 
