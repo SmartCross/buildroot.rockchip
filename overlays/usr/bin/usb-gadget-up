@@ -1,0 +1,38 @@
+#!/bin/sh
+GADGET_NAME=g_smartcross
+CONFIGFS_ROOT=/sys/kernel/config
+cd "${CONFIGFS_ROOT}"/usb_gadget
+
+mkdir $GADGET_NAME
+cd $GADGET_NAME
+
+echo 0xF055 > idVendor
+echo 0xCAFE > idProduct
+
+mkdir strings/0x409
+echo "SmartCross" > strings/0x409/manufacturer
+echo "SC-1 USB Device" > strings/0x409/product
+echo "00001" > strings/0x409/serialnumber
+
+mkdir configs/c.1
+
+# RNDIS have to be the first function
+# See: https://stackoverflow.com/questions/12154087/rndis-composite-device-cannot-start
+mkdir functions/rndis.usb0
+echo EF > functions/rndis.usb0/class
+echo 4 > functions/rndis.usb0/subclass
+echo 1 > functions/rndis.usb0/protocol
+ln -s functions/rndis.usb0 configs/c.1
+
+if [ -f /data/enable.uac2 ]; then
+    mkdir functions/uac2.aud0
+
+    echo "SmartCross Audio Interface" > functions/uac2.aud0/function_name
+    echo 1 > functions/uac2.aud0/c_mute_present
+    echo 1 > functions/uac2.aud0/p_mute_present
+    echo 48000 > functions/uac2.aud0/c_srate
+
+    ln -s functions/uac2.aud0 configs/c.1/
+fi
+
+echo ff400000.usb > UDC

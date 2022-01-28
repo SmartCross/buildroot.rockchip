@@ -1,0 +1,27 @@
+#!/bin/sh
+GADGET_NAME=g_smartcross
+CONFIGFS_ROOT=/sys/kernel/config
+cd "${CONFIGFS_ROOT}"/usb_gadget
+
+[ ! -d $GADGET_NAME ] && exit 0
+cd $GADGET_NAME
+
+# unbind
+if [[ ! -z $(grep '[^[:space:]]' UDC) ]] ; then
+  echo > UDC
+fi
+
+# remove all function in config links
+find configs -type l -exec rm {} +
+
+# remove all configs
+rmdir configs/*
+
+# remove all functions
+rmdir functions/*
+
+# remove all strings
+rmdir strings/*
+
+cd ..
+rmdir $GADGET_NAME
