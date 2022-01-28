@@ -10,7 +10,7 @@ CAMILLADSP_SITE = git://github.com/HEnquist/camilladsp.git
 CAMILLADSP_LICENSE = GPL-3.0+
 CAMILLADSP_LICENSE_FILES = COPYING
 
-CAMILLADSP_DEPENDENCIES = host-rustc
+CAMILLADSP_DEPENDENCIES = host-rustc alsa-lib
 
 CAMILLADSP_CARGO_ENV = CARGO_HOME=$(HOST_DIR)/share/cargo PKG_CONFIG=$(HOST_DIR)/bin/pkg-config
 
@@ -42,10 +42,12 @@ CAMILLADSP_CARGO_OPTS += --features "debug"
 endif
 
 ifeq ($(BR2_PACKAGE_PULSEAUDIO),y)
+CAMILLADSP_DEPENDENCIES += pulseaudio
 CAMILLADSP_CARGO_OPTS += --features "pulse-backend"
 endif
 
 ifeq ($(BR2_PACKAGE_JACK2),y)
+CAMILLADSP_DEPENDENCIES += jack2
 CAMILLADSP_CARGO_OPTS += --features "jack-backend"
 endif
 
