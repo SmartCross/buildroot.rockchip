@@ -1,0 +1,20 @@
+[Unit]
+Description=Bluealsa daemon
+Documentation=https://github.com/Arkq/bluez-alsa/
+After=dbus-org.bluez.service
+Requires=dbus-org.bluez.service
+
+[Service]
+Type=dbus
+BusName=org.bluealsa
+ExecStart=/usr/bin/bluealsa -p a2dp-sink
+Restart=on-failure
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+RemoveIPC=true
+RestrictAddressFamilies=AF_UNIX AF_BLUETOOTH
+
+[Install]
+WantedBy=bluetooth.target
