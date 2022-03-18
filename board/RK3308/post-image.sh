@@ -16,15 +16,13 @@ fi
 
 # copy uboot variable file over
 cp -a $BR2_EXTERNAL_RK3308_PATH/board/RK3308/vars.txt $BINARIES_DIR/
-
-ubootName=`find $BASE_DIR/build -name 'uboot-*' -type d`
 boardDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # uboot creation
-$RKTOOLS/loaderimage --pack --uboot $ubootName/u-boot-dtb.bin $BINARIES_DIR/uboot.img 0x600000 --size 1024 1
+$RKTOOLS/loaderimage --pack --uboot $BINARIES_DIR/u-boot.bin $BINARIES_DIR/uboot.img 0x600000 --size 1024 1
 
 # trust img creation
-cat >$ubootName/trust.ini <<EOF
+cat >$BINARIES_DIR/trust.ini <<EOF
 [VERSION]
 MAJOR=1
 MINOR=0
@@ -41,14 +39,14 @@ SEC=0
 [OUTPUT]
 PATH=$BINARIES_DIR/trust.img
 EOF
-$RKBIN/tools/trust_merger --size 1024 1 ${ubootName}/trust.ini
+$RKBIN/tools/trust_merger --size 1024 1 $BINARIES_DIR/trust.ini
 
 # first stage boot loader creation
-$ubootName/tools/mkimage -n rk3308 -T rksd -d $boardDir/rk3308_ddr_589MHz_uart0_m0_v1.31.bin $BINARIES_DIR/idbloader.img
+$HOST_DIR/bin/mkimage -n rk3308 -T rksd -d $boardDir/rk3308_ddr_589MHz_uart2_m1_v1.31.bin $BINARIES_DIR/idbloader.img
 cat $boardDir/rk3308_miniloader_emmc_port_support_sd_20190717.bin >> $BINARIES_DIR/idbloader.img
 
 # Generate the uboot script
-$ubootName/tools/mkimage -C none -A arm -T script -d $BR2_EXTERNAL_RK3308_PATH/board/RK3308/boot.cmd $BINARIES_DIR/boot.scr
+$HOST_DIR/bin/mkimage -C none -A arm -T script -d $BR2_EXTERNAL_RK3308_PATH/board/RK3308/boot.cmd $BINARIES_DIR/boot.scr
 
 # Put the device trees into the correct location
 mkdir -p $BINARIES_DIR/rockchip; cp -a $BINARIES_DIR/*.dtb $BINARIES_DIR/rockchip
