@@ -1,0 +1,6 @@
+config BR2_PACKAGE_RTL8822CU
+        bool "RTL8822CU USB WiFi Driver"
+        depends on BR2_LINUX_KERNEL
+        help
+                Enable support for RTL8822CU USB WiFi
+                driver kernel module

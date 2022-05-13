@@ -5,6 +5,7 @@ RTK_BTUSB_LICENSE = GPL-2.0
 RTK_BTUSB_MODULE_SUBDIRS = module
 
 define RTK_BTUSB_INSTALL_TARGET_CMDS
+  mkdir -p $(TARGET_DIR)/lib/firmware
 	$(INSTALL) -D -m 0644 $(@D)/firmware/* $(TARGET_DIR)/lib/firmware
 endef
 

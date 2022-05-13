@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CAMILLADSP_VERSION = v0.6.3
+CAMILLADSP_VERSION = next11
 CAMILLADSP_SOURCE = camilladsp-$(CAMILLADSP_VERSION).tar.gz
 CAMILLADSP_SITE = git://github.com/HEnquist/camilladsp.git
 CAMILLADSP_LICENSE = GPL-3.0+
@@ -12,7 +12,7 @@ CAMILLADSP_LICENSE_FILES = COPYING
 
 CAMILLADSP_DEPENDENCIES = host-rustc alsa-lib
 
-CAMILLADSP_CARGO_ENV = CARGO_HOME=$(HOST_DIR)/share/cargo PKG_CONFIG=$(HOST_DIR)/bin/pkg-config
+CAMILLADSP_CARGO_ENV = CARGO_HOME=$(HOST_DIR)/share/cargo PKG_CONFIG=$(HOST_DIR)/bin/pkg-config CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=$(HOST_DIR)/bin/aarch64-buildroot-linux-gnu-cc
 
 CAMILLADSP_CARGO_MODE = $(if $(BR2_ENABLE_DEBUG),debug,release)
 CAMILLADSP_BIN_DIR = target/$(RUSTC_TARGET_NAME)/$(CAMILLADSP_CARGO_MODE)
@@ -49,6 +49,10 @@ endif
 ifeq ($(BR2_PACKAGE_JACK2),y)
 CAMILLADSP_DEPENDENCIES += jack2
 CAMILLADSP_CARGO_OPTS += --features "jack-backend"
+endif
+
+ifeq ($(BR2_PACKAGE_BLUEZ_ALSA),y)
+CAMILLADSP_CARGO_OPTS += --features "bluez-backend"
 endif
 
 $(eval $(generic-package))
